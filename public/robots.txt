@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://syncassistantai.web.app/sitemap.xml
