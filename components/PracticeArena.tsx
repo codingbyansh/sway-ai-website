@@ -370,7 +370,7 @@ const PracticeArena: React.FC = () => {
     setIsCopied(false);
   };
 
-  const captionText = `Just hit a ${latestAnalysis?.rizzScore}% Rizz Level with ${selectedPersona?.name} on Sync AI! 💬 Can you beat my Rizz score? Try now at syncai.live @syncai.live`;
+  const captionText = `Just hit a ${latestAnalysis?.rizzScore}% Sync Level with ${selectedPersona?.name} on Sync AI! 💬 Can you beat my Sync score? Try now at syncai.live @syncai.live`;
 
   const handleCopyCaption = async () => {
     try {
@@ -768,7 +768,7 @@ const PracticeArena: React.FC = () => {
                         <span className="text-2xl font-black bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
                           {latestAnalysis.rizzScore}%
                         </span>
-                        <span className="text-[8px] font-black uppercase text-gray-400 tracking-wider">Rizz Level</span>
+                        <span className="text-[8px] font-black uppercase text-gray-400 tracking-wider">Sync Level</span>
                       </div>
                     </div>
  
@@ -804,7 +804,7 @@ const PracticeArena: React.FC = () => {
                     className="w-full py-3.5 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:scale-[1.02] active:scale-[0.98] text-white text-xs font-extrabold rounded-2xl transition-all flex items-center justify-center space-x-2 shadow-lg shadow-pink-500/20 uppercase tracking-wider"
                   >
                     <Instagram size={16} />
-                    <span>Share Rizz Level</span>
+                    <span>Share Sync Level</span>
                   </button>
 
                   {/* Back to Persona selection */}
