@@ -5,7 +5,7 @@ import InputSection from './components/InputSection';
 import OptionsSelector from './components/OptionsSelector';
 import Button from './components/Button';
 import SwipeableReplyCard from './components/SwipeableReplyCard';
-import ReplyCard from './components/ReplyCard';
+import DeckSwipeableReplyCard from './components/DeckSwipeableReplyCard';
 import PremiumModal from './components/PremiumModal';
 import GhostingRecovery from './components/GhostingRecovery';
 import ConflictResolutionModal from './components/ConflictResolutionModal';
@@ -527,11 +527,9 @@ const App: React.FC = () => {
                             <div className="space-y-4">
                               <div className="flex justify-between items-center px-1">
                                 <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Suggested Replies</h3>
-                                {viewMode === 'robo' && (
-                                  <span className="text-[10px] text-gray-400 font-medium">
-                                    {currentReplyIndex + 1} of {result.replies.length}
-                                  </span>
-                                )}
+                                <span className="text-[10px] text-gray-400 font-medium">
+                                  {currentReplyIndex + 1} of {result.replies.length}
+                                </span>
                               </div>
 
                               <div className="relative">
@@ -562,22 +560,31 @@ const App: React.FC = () => {
                                     </div>
                                   )
                                 ) : (
-                                  <div className="grid grid-cols-1 gap-4">
-                                    {result.replies.map((reply) => (
-                                      <ReplyCard
-                                        key={reply.id}
-                                        reply={reply}
-                                        onSave={async (r) => {
-                                          try {
-                                            const updatedUserRes = await userService.saveReply(validatedUser.email, r.text, 'ReplyWithConfidence');
-                                            if (updatedUserRes) setUser(updatedUserRes);
-                                          } catch (e: any) {
-                                            alert(e.message);
-                                          }
-                                        }}
-                                      />
-                                    ))}
-                                  </div>
+                                  result.replies[currentReplyIndex] ? (
+                                    <DeckSwipeableReplyCard
+                                      key={result.replies[currentReplyIndex].id}
+                                      reply={result.replies[currentReplyIndex]}
+                                      onAccept={async (reply) => {
+                                        try {
+                                          const updatedUserRes = await userService.saveReply(validatedUser.email, reply.text, 'ReplyWithConfidence');
+                                          if (updatedUserRes) setUser(updatedUserRes);
+                                        } catch (e: any) {
+                                          alert(e.message);
+                                        }
+                                      }}
+                                      onNext={() => {
+                                        if (currentReplyIndex < result.replies.length - 1) {
+                                          setCurrentReplyIndex(currentReplyIndex + 1);
+                                        } else {
+                                          setResult(null);
+                                        }
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className="h-[200px] flex items-center justify-center text-gray-400 italic text-sm">
+                                      No more replies. Generate again!
+                                    </div>
+                                  )
                                 )}
                               </div>
 

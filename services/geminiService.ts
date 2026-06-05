@@ -32,6 +32,67 @@ const getHFToken = (): string | null => {
   return token;
 };
 
+const getGeminiKey = (): string | null => {
+  const key = import.meta.env.VITE_GEMINI_API_KEY;
+  if (!key || key.includes('YOUR_')) return null;
+  return key;
+};
+
+async function callGemini(systemPrompt: string, userPrompt: string, base64Image?: string | null): Promise<string> {
+  const key = getGeminiKey();
+  if (!key) throw new Error("Gemini API key not configured.");
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+
+  const parts: any[] = [];
+  
+  if (base64Image) {
+    const commaIndex = base64Image.indexOf(',');
+    const base64Data = commaIndex !== -1 ? base64Image.substring(commaIndex + 1) : base64Image;
+    
+    let mimeType = "image/jpeg";
+    const match = base64Image.match(/^data:(image\/[a-zA-Z+-\.]+);base64,/);
+    if (match) {
+      mimeType = match[1];
+    }
+    
+    parts.push({
+      inlineData: {
+        mimeType: mimeType,
+        data: base64Data
+      }
+    });
+  }
+
+  parts.push({ text: `${systemPrompt}\n\nUser Request:\n${userPrompt}` });
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      contents: [
+        {
+          parts: parts
+        }
+      ]
+    }),
+  });
+
+  if (!response.ok) {
+    const errText = await response.text();
+    throw new Error(`Gemini API error (${response.status}): ${errText}`);
+  }
+
+  const data = await response.json();
+  if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+    return data.candidates[0].content.parts[0].text;
+  }
+
+  throw new Error("Unexpected Gemini response format.");
+}
+
 const getStyleInstructions = (style: TextStyle): string => {
   switch (style) {
     case TextStyle.SHORT:
@@ -101,7 +162,20 @@ async function callHuggingFace(systemPrompt: string, userPrompt: string): Promis
 async function callAI(systemPrompt: string, userPrompt: string, imageData?: string | null): Promise<string> {
   const errors: string[] = [];
 
-  // Try Hugging Face (Qwen2.5-72B) primarily
+  // 1. Try Gemini primarily (highly reliable & handles Indian context/Hinglish exceptionally well)
+  if (getGeminiKey()) {
+    try {
+      console.log("🚀 Trying Gemini (gemini-2.5-flash)...");
+      const text = await callGemini(systemPrompt, userPrompt, imageData);
+      console.log("✅ Gemini succeeded");
+      return text;
+    } catch (err: any) {
+      console.warn("❌ Gemini failed:", err?.message);
+      errors.push(`Gemini: ${err?.message}`);
+    }
+  }
+
+  // 2. Try Hugging Face fallback
   if (getHFToken()) {
     try {
       console.log("🤗 Trying Hugging Face (Qwen2.5-72B)...");
@@ -164,7 +238,20 @@ function parseAIJson<T>(rawText: string, label: string): T {
 export async function extractTextFromImage(imageData: string): Promise<string> {
   const ocrPrompt = "Perform high-accuracy OCR on this chat screenshot. Extract and transcribe every single message, visible name, and timestamp. Return ONLY the transcribed text. Do NOT include any introduction, explanations, or markdown formatting.";
 
-  // 1. Try Hugging Face primarily
+  // 1. Try Gemini primarily (highly reliable OCR for images)
+  const geminiKey = getGeminiKey();
+  if (geminiKey) {
+    try {
+      console.log("🔍 Extracting text from image using Gemini...");
+      const text = await callGemini("You are a high-accuracy OCR assistant.", ocrPrompt, imageData);
+      console.log("✅ Gemini OCR succeeded");
+      return text.trim();
+    } catch (e: any) {
+      console.warn("❌ Gemini OCR failed:", e.message);
+    }
+  }
+
+  // 2. Try Hugging Face fallback
   const token = getHFToken();
   if (token) {
     try {
@@ -203,7 +290,7 @@ export async function extractTextFromImage(imageData: string): Promise<string> {
     }
   }
 
-  throw new Error("Hugging Face vision OCR failed. Please try typing the message manually.");
+  throw new Error("Vision OCR failed on both AI models. Please try typing the message manually.");
 }
 
 // ==========================================
