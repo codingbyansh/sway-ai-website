@@ -370,7 +370,7 @@ const PracticeArena: React.FC = () => {
     setIsCopied(false);
   };
 
-  const captionText = `Just hit a ${latestAnalysis?.rizzScore}% Sync Level with ${selectedPersona?.name} on Sync AI! 💬 Can you beat my Sync score? Try now at syncai.live @syncai.live`;
+  const captionText = `Just hit a ${latestAnalysis?.rizzScore}% Rizz Level with ${selectedPersona?.name} on Sync AI! 💬 Can you beat my Rizz score? Try now at syncai.live @syncai.live`;
 
   const handleCopyCaption = async () => {
     try {
@@ -732,11 +732,11 @@ const PracticeArena: React.FC = () => {
                   <div className="flex items-center justify-between border-b border-gray-50 dark:border-white/5 pb-3">
                     <h3 className="font-extrabold text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
                       <Sparkles size={16} className="text-amber-500" />
-                      <span>Sync Coaching Analysis</span>
+                      <span>Rizz Analyzer</span>
                     </h3>
                     <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Latest Text Evaluated</span>
                   </div>
-
+ 
                   {/* Circular Sync Meter */}
                   <div className="flex flex-col items-center justify-center py-4 bg-gray-50/50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 relative overflow-hidden">
                     
@@ -768,10 +768,10 @@ const PracticeArena: React.FC = () => {
                         <span className="text-2xl font-black bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
                           {latestAnalysis.rizzScore}%
                         </span>
-                        <span className="text-[8px] font-black uppercase text-gray-400 tracking-wider">Sync Level</span>
+                        <span className="text-[8px] font-black uppercase text-gray-400 tracking-wider">Rizz Level</span>
                       </div>
                     </div>
-
+ 
                     <div className="mt-3 flex items-center gap-2">
                       <span className={`px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest border ${getRatingBadgeClass(latestAnalysis.rizzRating)}`}>
                         {latestAnalysis.rizzRating === 'Spicy' ? '🔥 Spicy' : 
@@ -781,12 +781,12 @@ const PracticeArena: React.FC = () => {
                       </span>
                     </div>
                   </div>
-
+ 
                   {/* Feedback Card */}
                   <div className="space-y-2.5">
                     <h4 className="font-extrabold text-xs text-gray-900 dark:text-white flex items-center gap-1.5">
                       <TrendingUp size={14} className="text-pink-500" />
-                      <span>Coaching Advice</span>
+                      <span>Rizz Coaching Advice</span>
                     </h4>
                     <div className="bg-pink-50/50 dark:bg-pink-500/5 border border-pink-100/30 dark:border-pink-500/10 p-4 rounded-2xl">
                       <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed font-medium">
@@ -804,7 +804,7 @@ const PracticeArena: React.FC = () => {
                     className="w-full py-3.5 bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:scale-[1.02] active:scale-[0.98] text-white text-xs font-extrabold rounded-2xl transition-all flex items-center justify-center space-x-2 shadow-lg shadow-pink-500/20 uppercase tracking-wider"
                   >
                     <Instagram size={16} />
-                    <span>Share Sync Level</span>
+                    <span>Share Rizz Level</span>
                   </button>
 
                   {/* Back to Persona selection */}

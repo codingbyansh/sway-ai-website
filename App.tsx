@@ -310,8 +310,8 @@ const App: React.FC = () => {
   const handleGenerate = async () => {
     setError(null);
 
-    if (!textInput.trim()) {
-      setError("Please paste a text message first.");
+    if (!textInput.trim() && !imageInput) {
+      setError("Please paste a text message or upload a screenshot first.");
       return;
     }
     if (!rawUser) return;
@@ -323,7 +323,7 @@ const App: React.FC = () => {
     try {
       const response = await generateReplies(
         textInput,
-        null,
+        imageInput,
         selectedTone,
         selectedLanguage,
         useEmojis,
@@ -513,7 +513,7 @@ const App: React.FC = () => {
                             <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 rounded-xl gap-2">
                               <div>
                                 <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-0.5">
-                                  AI Context Analysis
+                                  Rizz Analyzer
                                 </p>
                                 <div className="text-xs text-gray-800 dark:text-gray-100">
                                   <span className="font-semibold">{result.analysis.stage}</span> • {result.analysis.intent}
