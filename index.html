@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+
+  <!-- ── Google AdSense Integration ── -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4961157209391354" crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-4961157209391354">
+
+  <!-- ── Primary SEO ── -->
+  <title>Sync AI</title>
+  <meta name="description" content="Sync AI helps you craft high-rizz, confident, and witty dating replies in seconds. Powered by AI. Available in English, Hindi & Hinglish. Elevate your text game." />
+  <meta name="keywords" content="dating reply AI, rizz AI, Hinglish AI, dating wingman, dating assistant, ghosting recovery, Sync AI, Aroxiania AI" />
+  <meta name="author" content="Aroxiania AI" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://syncassistantai.web.app/" />
+
+  <!-- ── Open Graph / Social ── -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://syncassistantai.web.app/" />
+  <meta property="og:title" content="Sync AI — AI Dating Wingman & Reply Assistant" />
+  <meta property="og:description" content="Generate high-rizz, confident, and witty dating replies instantly. Works in English, Hindi & Hinglish. Try free!" />
+  <meta property="og:image" content="https://syncassistantai.web.app/og-cover.png" />
+  <meta property="og:site_name" content="Sync AI" />
+  <meta property="og:locale" content="en_IN" />
+
+  <!-- ── Twitter Card ── -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Sync AI — AI Dating Wingman & Reply Assistant" />
+  <meta name="twitter:description" content="Craft perfect dating replies with AI. Elevate your text game." />
+  <meta name="twitter:image" content="https://syncassistantai.web.app/og-cover.png" />
+
+  <!-- ── Favicon ── -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+
+  <!-- ── Fonts ── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- ── Tailwind ── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Outfit', 'sans-serif'] },
+          colors: {
+            sync: {
+              50: '#fff0f3', 100: '#ffe3e8', 200: '#ffc9d6',
+              300: '#ff9fb8', 400: '#ff6b91', 500: '#f43f6e',
+              600: '#e11d4e', 700: '#be123c', 800: '#9f1239', 900: '#881337'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- ── Global Styles ── -->
+  <style>
+    body { background-color: #fafafa; font-family: 'Outfit', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
+    html.dark body { background-color: #0a0a0f; color: #f3f4f6; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #f43f6e; border-radius: 10px; }
+  </style>
+  <link rel="stylesheet" href="/index.css" />
+
+  <!-- ── Structured Data (Schema.org) ── -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Sync AI",
+    "url": "https://syncassistantai.web.app",
+    "description": "AI-powered dating reply assistant and wingman. Generate witty, high-rizz, confident replies in English, Hindi & Hinglish.",
+    "applicationCategory": "LifestyleApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "INR"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Aroxiania AI",
+      "url": "https://syncassistantai.web.app"
+    }
+  }
+  </script>
+  <script>
+    // Immediate script to apply theme
+    if (localStorage.getItem('sync_theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+
+</html>
