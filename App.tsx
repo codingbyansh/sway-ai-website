@@ -510,17 +510,73 @@ const App: React.FC = () => {
 
                         {result && (
                           <div ref={resultsRef} className="space-y-4 pt-4 lg:border-t lg:border-gray-100 dark:border-white/5">
-                            <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-blue-50 dark:bg-blue-950/20 border border-blue-100 dark:border-blue-900/30 p-3 rounded-xl gap-2">
-                              <div>
-                                <p className="text-[10px] text-blue-600 dark:text-blue-400 font-bold uppercase tracking-wider mb-0.5">
-                                  Rizz Analyzer
-                                </p>
-                                <div className="text-xs text-gray-800 dark:text-gray-100">
-                                  <span className="font-semibold">{result.analysis.stage}</span> • {result.analysis.intent}
+                            <div className="bg-white dark:bg-[#12121a] border border-gray-150 dark:border-white/5 rounded-3xl p-5 shadow-sm space-y-4">
+                              <div className="flex flex-col md:flex-row items-center gap-5 md:gap-8">
+                                {/* Circular Sync Meter */}
+                                {result.analysis.score !== undefined && (
+                                  <div className="flex flex-col items-center justify-center shrink-0">
+                                    <div className="relative w-24 h-24 flex items-center justify-center">
+                                      <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" stroke="#f3f4f6" className="dark:stroke-white/5" strokeWidth="8" fill="transparent" />
+                                        <motion.circle
+                                          cx="50"
+                                          cy="50"
+                                          r="40"
+                                          stroke="url(#sync-gradient-replies)"
+                                          strokeWidth="8"
+                                          fill="transparent"
+                                          strokeDasharray="251.2"
+                                          initial={{ strokeDashoffset: 251.2 }}
+                                          animate={{ strokeDashoffset: 251.2 - (251.2 * result.analysis.score) / 100 }}
+                                          transition={{ duration: 1, ease: 'easeOut' }}
+                                        />
+                                        <defs>
+                                          <linearGradient id="sync-gradient-replies" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stopColor="#ec4899" />
+                                            <stop offset="50%" stopColor="#f43f5e" />
+                                            <stop offset="100%" stopColor="#8b5cf6" />
+                                          </linearGradient>
+                                        </defs>
+                                      </svg>
+                                      <div className="absolute flex flex-col items-center justify-center text-center">
+                                        <span className="text-xl font-black bg-gradient-to-r from-pink-500 to-rose-600 bg-clip-text text-transparent">
+                                          {result.analysis.score}%
+                                        </span>
+                                        <span className="text-[7px] font-black uppercase text-gray-450 tracking-wider">Sync Level</span>
+                                      </div>
+                                    </div>
+                                    {result.analysis.rating && (
+                                      <span className={`mt-2 px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                                        result.analysis.rating === 'Spicy' ? 'bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20' :
+                                        result.analysis.rating === 'Sweet' ? 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20' :
+                                        result.analysis.rating === 'Safe' ? 'bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20' :
+                                        result.analysis.rating === 'Dry' ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20' :
+                                        'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20'
+                                      }`}>
+                                        {result.analysis.rating === 'Spicy' ? '🔥 Spicy' : 
+                                         result.analysis.rating === 'Sweet' ? '🧸 Sweet' : 
+                                         result.analysis.rating === 'Safe' ? '🛡️ Safe' : 
+                                         result.analysis.rating === 'Dry' ? '🏜️ Dry' : '❄️ Awkward'}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
+
+                                {/* Sync Coaching text analysis */}
+                                <div className="flex-1 space-y-2 text-center md:text-left">
+                                  <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-gray-50 dark:border-white/5 pb-2 gap-1">
+                                    <h4 className="font-extrabold text-xs text-gray-900 dark:text-white flex items-center justify-center md:justify-start gap-1.5">
+                                      <Sparkles size={14} className="text-amber-500" />
+                                      <span>Sync Analyzer</span>
+                                    </h4>
+                                    <div className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">
+                                      {result.analysis.stage} • {result.analysis.intent}
+                                    </div>
+                                  </div>
+                                  <p className="text-xs text-gray-750 dark:text-gray-200 leading-relaxed italic">
+                                    "{result.analysis.advice}"
+                                  </p>
                                 </div>
-                              </div>
-                              <div className="sm:text-right sm:max-w-[60%]">
-                                <p className="text-xs text-gray-600 dark:text-gray-300 italic leading-relaxed">"{result.analysis.advice}"</p>
                               </div>
                             </div>
 

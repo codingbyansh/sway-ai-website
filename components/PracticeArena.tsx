@@ -732,7 +732,7 @@ const PracticeArena: React.FC = () => {
                   <div className="flex items-center justify-between border-b border-gray-50 dark:border-white/5 pb-3">
                     <h3 className="font-extrabold text-sm text-gray-900 dark:text-white flex items-center gap-1.5">
                       <Sparkles size={16} className="text-amber-500" />
-                      <span>Rizz Analyzer</span>
+                      <span>Sync Analyzer</span>
                     </h3>
                     <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Latest Text Evaluated</span>
                   </div>
@@ -786,7 +786,7 @@ const PracticeArena: React.FC = () => {
                   <div className="space-y-2.5">
                     <h4 className="font-extrabold text-xs text-gray-900 dark:text-white flex items-center gap-1.5">
                       <TrendingUp size={14} className="text-pink-500" />
-                      <span>Rizz Coaching Advice</span>
+                      <span>Sync Coaching Advice</span>
                     </h4>
                     <div className="bg-pink-50/50 dark:bg-pink-500/5 border border-pink-100/30 dark:border-pink-500/10 p-4 rounded-2xl">
                       <p className="text-xs text-gray-700 dark:text-gray-200 leading-relaxed font-medium">

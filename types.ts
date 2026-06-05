@@ -38,6 +38,8 @@ export interface AnalysisResult {
   stage: string;
   intent: string;
   advice: string;
+  score?: number;
+  rating?: 'Spicy' | 'Sweet' | 'Safe' | 'Dry' | 'Awkward';
 }
 
 export interface GeneratedResponse {

@@ -330,14 +330,15 @@ export const generateReplies = async (
 Principles: Use Hinglish/Indian English, be witty but respectful.
 Tone: ${tone}. Style: ${styleGuide}. Emojis: ${emojiInstruction}.
 Generate 3 reply options (Safe, Balanced, Bold) in ${language}.
+Also evaluate the overall conversation history, calculate a "score" (0 to 100) for the alignment/chemistry (Sync Level), and select a "rating" ('Spicy' | 'Sweet' | 'Safe' | 'Dry' | 'Awkward').
 Output MUST be strict JSON. No markdown, no code blocks, just raw JSON.`;
 
   const userPrompt = `Input Context:
 ${finalInputText ? `Message: "${finalInputText}"` : 'Image: Attached screenshot.'}
 
-Task: Analyze the vibe and generate 3 reply options.
+Task: Analyze the vibe, calculate Sync Score, and generate 3 reply options.
 Return this exact JSON structure:
-{"analysis": {"stage": "...", "intent": "...", "advice": "..."}, "replies": [{"id": "1", "text": "...", "style": "Safe"}, {"id": "2", "text": "...", "style": "Balanced"}, {"id": "3", "text": "...", "style": "Bold"}]}`;
+{"analysis": {"stage": "...", "intent": "...", "advice": "...", "score": 70, "rating": "Sweet"}, "replies": [{"id": "1", "text": "...", "style": "Safe"}, {"id": "2", "text": "...", "style": "Balanced"}, {"id": "3", "text": "...", "style": "Bold"}]}`;
 
   try {
     const rawText = await callAI(systemPrompt, userPrompt, null);
@@ -348,7 +349,9 @@ Return this exact JSON structure:
       analysis: {
         stage: "Active Dialogue",
         intent: "Building Rapport",
-        advice: "They are responding well! Maintain this high positive energy and transition to a playful challenge."
+        advice: "They are responding well! Maintain this high positive energy and transition to a playful challenge.",
+        score: 70,
+        rating: "Sweet"
       },
       replies: [
         { id: "1", text: "Hey! How has your week been so far? 😊", style: "Safe" },
