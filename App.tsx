@@ -5,6 +5,7 @@ import InputSection from './components/InputSection';
 import OptionsSelector from './components/OptionsSelector';
 import Button from './components/Button';
 import SwipeableReplyCard from './components/SwipeableReplyCard';
+import ReplyCard from './components/ReplyCard';
 import PremiumModal from './components/PremiumModal';
 import GhostingRecovery from './components/GhostingRecovery';
 import ConflictResolutionModal from './components/ConflictResolutionModal';
@@ -151,6 +152,7 @@ const App: React.FC = () => {
 
   const [result, setResult] = useState<GeneratedResponse | null>(() => loadFromStorage<GeneratedResponse>('sync ai_replies'));
   const [currentReplyIndex, setCurrentReplyIndex] = useState(0);
+  const [viewMode, setViewMode] = useState<'robo' | 'swipe'>('robo');
   const [error, setError] = useState<string | null>(null);
 
   const resultsRef = useRef<HTMLDivElement>(null);
@@ -522,40 +524,81 @@ const App: React.FC = () => {
                               </div>
                             </div>
 
-                            <div className="space-y-3">
+                            <div className="space-y-4">
                               <div className="flex justify-between items-center px-1">
                                 <h3 className="font-semibold text-sm text-gray-900 dark:text-white">Suggested Replies</h3>
-                                <span className="text-[10px] text-gray-400 font-medium">
-                                  {currentReplyIndex + 1} of {result.replies.length}
-                                </span>
+                                {viewMode === 'robo' && (
+                                  <span className="text-[10px] text-gray-400 font-medium">
+                                    {currentReplyIndex + 1} of {result.replies.length}
+                                  </span>
+                                )}
                               </div>
 
                               <div className="relative">
-                                {result.replies[currentReplyIndex] ? (
-                                  <SwipeableReplyCard
-                                    key={result.replies[currentReplyIndex].id}
-                                    reply={result.replies[currentReplyIndex]}
-                                    onAccept={async (reply) => {
-                                      try {
-                                        const updatedUserRes = await userService.saveReply(validatedUser.email, reply.text, 'ReplyWithConfidence');
-                                        if (updatedUserRes) setUser(updatedUserRes);
-                                      } catch (e: any) {
-                                        alert(e.message);
-                                      }
-                                    }}
-                                    onNext={() => {
-                                      if (currentReplyIndex < result.replies.length - 1) {
-                                        setCurrentReplyIndex(currentReplyIndex + 1);
-                                      } else {
-                                        setResult(null);
-                                      }
-                                    }}
-                                  />
+                                {viewMode === 'robo' ? (
+                                  result.replies[currentReplyIndex] ? (
+                                    <SwipeableReplyCard
+                                      key={result.replies[currentReplyIndex].id}
+                                      reply={result.replies[currentReplyIndex]}
+                                      onAccept={async (reply) => {
+                                        try {
+                                          const updatedUserRes = await userService.saveReply(validatedUser.email, reply.text, 'ReplyWithConfidence');
+                                          if (updatedUserRes) setUser(updatedUserRes);
+                                        } catch (e: any) {
+                                          alert(e.message);
+                                        }
+                                      }}
+                                      onNext={() => {
+                                        if (currentReplyIndex < result.replies.length - 1) {
+                                          setCurrentReplyIndex(currentReplyIndex + 1);
+                                        } else {
+                                          setResult(null);
+                                        }
+                                      }}
+                                    />
+                                  ) : (
+                                    <div className="h-[200px] flex items-center justify-center text-gray-400 italic text-sm">
+                                      No more replies. Generate again!
+                                    </div>
+                                  )
                                 ) : (
-                                  <div className="h-[200px] flex items-center justify-center text-gray-400 italic text-sm">
-                                    No more replies. Generate again!
+                                  <div className="grid grid-cols-1 gap-4">
+                                    {result.replies.map((reply) => (
+                                      <ReplyCard
+                                        key={reply.id}
+                                        reply={reply}
+                                        onSave={async (r) => {
+                                          try {
+                                            const updatedUserRes = await userService.saveReply(validatedUser.email, r.text, 'ReplyWithConfidence');
+                                            if (updatedUserRes) setUser(updatedUserRes);
+                                          } catch (e: any) {
+                                            alert(e.message);
+                                          }
+                                        }}
+                                      />
+                                    ))}
                                   </div>
                                 )}
+                              </div>
+
+                              {/* Toggle switch at the bottom */}
+                              <div className="flex justify-center pt-2">
+                                <div className="bg-gray-100 dark:bg-white/5 p-1 rounded-2xl flex gap-1 text-xs border border-gray-200/50 dark:border-white/5 shadow-inner">
+                                  <button
+                                    onClick={() => setViewMode('robo')}
+                                    className={`px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 ${viewMode === 'robo' ? 'bg-pink-600 text-white shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                                  >
+                                    <Sparkles size={12} />
+                                    <span>Robo Type</span>
+                                  </button>
+                                  <button
+                                    onClick={() => setViewMode('swipe')}
+                                    className={`px-4 py-2 rounded-xl font-bold transition-all flex items-center gap-1.5 ${viewMode === 'swipe' ? 'bg-pink-600 text-white shadow-md' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'}`}
+                                  >
+                                    <MessageCircle size={12} />
+                                    <span>Swipe Cards</span>
+                                  </button>
+                                </div>
                               </div>
                             </div>
 
